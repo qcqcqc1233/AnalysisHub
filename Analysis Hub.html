@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Hub</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(to right, #1F3A93, #4A69BD);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header img {
+            max-width: 100px;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+        }
+
+        form {
+            background-color: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        select {
+            background-color: #F2F2F2;
+        }
+
+        button {
+            background: linear-gradient(to right, #1F3A93, #4A69BD);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.png" alt="Company Logo">
+        <h1>אפליקציית ניתוחים</h1>
+    </header>
+
+    <form>
+        <label for="client">לקוח:</label>
+        <select id="client">
+            <option value="">-- בחר לקוח --</option>
+            <option value="client1">לקוח 1</option>
+            <option value="client2">לקוח 2</option>
+            <option value="client3">לקוח 3</option>
+        </select>
+        <div class="error" id="clientError">אנא בחר לקוח.</div>
+
+        <label for="analysis">סוג ניתוח:</label>
+        <select id="analysis">
+            <option value="">-- בחר סוג ניתוח --</option>
+            <option value="analysis1">ניתוח 1</option>
+            <option value="analysis2">ניתוח 2</option>
+            <option value="analysis3">ניתוח 3</option>
+        </select>
+        <div class="error" id="analysisError">אנא בחר סוג ניתוח.</div>
+
+        <button type="button" onclick="submitForm()">שגר</button>
+    </form>
+
+    <footer>
+        © 2025 Your Company Name
+    </footer>
+
+    <script>
+        function submitForm() {
+            const client = document.getElementById('client').value;
+            const analysis = document.getElementById('analysis').value;
+
+            // הסתר הודעות שגיאה קודמות
+            document.getElementById('clientError').style.display = 'none';
+            document.getElementById('analysisError').style.display = 'none';
+
+            if (!client) {
+                document.getElementById('clientError').style.display = 'block';
+                return;
+            }
+
+            if (!analysis) {
+                document.getElementById('analysisError').style.display = 'block';
+                return;
+            }
+
+            alert('ניתוח נשלח בהצלחה!');
+        }
+    </script>
+
+</body>
+</html>

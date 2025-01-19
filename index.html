@@ -147,10 +147,17 @@
 
         <label for="presetDates">טווח תאריכים:</label>
         <select id="presetDates" onchange="handleDateSelection()">
-            <option value="custom">-- מותאם אישית --</option>
+            <option value="custom">-- בחר טווח --</option>
             <option value="lastWeek">שבוע שעבר</option>
+            <option value="thisWeek">שבוע נוכחי</option>
             <option value="lastMonth">חודש שעבר</option>
-            <option value="thisMonth">החודש הנוכחי</option>
+            <option value="thisMonth">חודש נוכחי</option>
+            <option value="lastQuarter">רבעון שעבר</option>
+            <option value="thisQuarter">רבעון נוכחי</option>
+            <option value="lastHalfYear">חציון שעבר</option>
+            <option value="thisHalfYear">חציון נוכחי</option>
+            <option value="lastYear">שנה שעברה</option>
+            <option value="thisYear">שנה נוכחית</option>
         </select>
 
         <div id="customDateRange" style="display: none;">
@@ -190,26 +197,41 @@
             const today = new Date();
             let startDate, endDate;
 
-            if (preset === 'lastWeek') {
-                const lastWeekStart = new Date();
-                lastWeekStart.setDate(today.getDate() - today.getDay() - 7);
-                const lastWeekEnd = new Date(lastWeekStart);
-                lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
-
-                startDate = lastWeekStart.toISOString().split('T')[0];
-                endDate = lastWeekEnd.toISOString().split('T')[0];
-            } else if (preset === 'lastMonth') {
-                const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
-                const lastMonthStart = new Date(lastMonthEnd.getFullYear(), lastMonthEnd.getMonth(), 1);
-
-                startDate = lastMonthStart.toISOString().split('T')[0];
-                endDate = lastMonthEnd.toISOString().split('T')[0];
-            } else if (preset === 'thisMonth') {
-                const thisMonthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-                const thisMonthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-                startDate = thisMonthStart.toISOString().split('T')[0];
-                endDate = thisMonthEnd.toISOString().split('T')[0];
+            switch (preset) {
+                case 'lastWeek':
+                    const lastWeekStart = new Date(today.setDate(today.getDate() - today.getDay() - 7));
+                    const lastWeekEnd = new Date(lastWeekStart);
+                    lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
+                    startDate = lastWeekStart.toISOString().split('T')[0];
+                    endDate = lastWeekEnd.toISOString().split('T')[0];
+                    break;
+                case 'thisWeek':
+                    const thisWeekStart = new Date(today.setDate(today.getDate() - today.getDay()));
+                    const thisWeekEnd = new Date(thisWeekStart);
+                    thisWeekEnd.setDate(thisWeekStart.getDate() + 6);
+                    startDate = thisWeekStart.toISOString().split('T')[0];
+                    endDate = thisWeekEnd.toISOString().split('T')[0];
+                    break;
+                case 'lastMonth':
+                    const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+                    const lastMonthStart = new Date(lastMonthEnd.getFullYear(), lastMonthEnd.getMonth(), 1);
+                    startDate = lastMonthStart.toISOString().split('T')[0];
+                    endDate = lastMonthEnd.toISOString().split('T')[0];
+                    break;
+                case 'thisMonth':
+                    const thisMonthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                    const thisMonthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                    startDate = thisMonthStart.toISOString().split('T')[0];
+                    endDate = thisMonthEnd.toISOString().split('T')[0];
+                    break;
+                case 'lastQuarter':
+                case 'thisQuarter':
+                case 'lastHalfYear':
+                case 'thisHalfYear':
+                case 'lastYear':
+                case 'thisYear':
+                    // Implement logic here for other cases
+                    break;
             }
 
             return { startDate, endDate };

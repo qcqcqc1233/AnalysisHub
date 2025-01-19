@@ -204,6 +204,61 @@
             }
         }
 
+        function submitForm() {
+            const client = document.getElementById('client').value;
+            const analysis = document.getElementById('analysis').value;
+            const preset = document.getElementById('presetDates').value;
+            const startDateInput = document.getElementById('startDate').value;
+            const endDateInput = document.getElementById('endDate').value;
+
+            let startDate, endDate;
+
+            if (!client || !analysis || !preset) {
+                alert('אנא מלא את כל השדות הנדרשים.');
+                return;
+            }
+
+            if (preset === 'custom') {
+                if (!startDateInput || !endDateInput) {
+                    alert('אנא הזן תאריכים לטווח מותאם אישית.');
+                    return;
+                }
+                startDate = startDateInput;
+                endDate = endDateInput;
+            } else {
+                const dates = calculatePresetDates(preset);
+                startDate = dates.startDate;
+                endDate = dates.endDate;
+            }
+
+            const data = {
+                client,
+                analysis,
+                preset,
+                startDate,
+                endDate,
+            };
+
+            fetch('https://hook.eu2.make.com/nu7wjjbbfdr1l9hu4m9zdkw3pybnab8z', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('הנתונים נשלחו בהצלחה!');
+                } else {
+                    alert('חלה שגיאה בשליחת הנתונים.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('חלה שגיאה בשליחת הנתונים.');
+            });
+        }
+
         function calculatePresetDates(preset) {
             const today = new Date();
             let startDate, endDate;
@@ -287,64 +342,6 @@
             }
 
             return { startDate, endDate };
-        }
-
-        function submitForm() {
-            const client = document.getElementById('client').value;
-            const analysis = document.getElementById('analysis').value;
-            const preset = document.getElementById('presetDates').value;
-            const startDateInput = document.getElementById('startDate').value;
-            const endDateInput = document.getElementById('endDate').value;
-            const dateError = document.getElementById('dateError');
-
-            let startDate, endDate;
-
-            dateError.style.display = 'none';
-
-            if (preset === 'custom') {
-                if (!startDateInput || !endDateInput) {
-                    dateError.style.display = 'block';
-                    return;
-                }
-                startDate = startDateInput;
-                endDate = endDateInput;
-            } else {
-                const dates = calculatePresetDates(preset);
-                startDate = dates.startDate;
-                endDate = dates.endDate;
-            }
-
-            if (!client || !analysis || !startDate || !endDate) {
-                alert('אנא מלא את כל השדות הנדרשים.');
-                return;
-            }
-
-            const data = {
-                client,
-                analysis,
-                preset,
-                startDate,
-                endDate,
-            };
-
-            fetch('https://hook.eu2.make.com/nu7wjjbbfdr1l9hu4m9zdkw3pybnab8z', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('הנתונים נשלחו בהצלחה!');
-                } else {
-                    alert('חלה שגיאה בשליחת הנתונים.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('חלה שגיאה בשליחת הנתונים.');
-            });
         }
     </script>
 </body>

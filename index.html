@@ -124,24 +124,24 @@
         <label for="client">לקוח:</label>
         <select id="client">
             <option value="">-- בחר לקוח --</option>
-            <option value="client1">IDI - 5</option>
-            <option value="client2">IDI - 9</option>
-            <option value="client3">Isracard</option>
-            <option value="client4">HOT</option>
-            <option value="client5">Champion</option>
+            <option value="IDI - 5">IDI - 5</option>
+            <option value="IDI - 9">IDI - 9</option>
+            <option value="Isracard">Isracard</option>
+            <option value="HOT">HOT</option>
+            <option value="Champion">Champion</option>
         </select>
         <div class="error" id="clientError">אנא בחר לקוח.</div>
 
         <label for="analysis">סוג ניתוח:</label>
         <select id="analysis">
             <option value="">-- סוג ניתוח --</option>
-            <option value="analysis1">Google Ads - Search Term Analyzer</option>
-            <option value="analysis2">Google Ads - Campaign Performance</option>
-            <option value="analysis3">Facebook Ads - Campaign Performance</option>
-            <option value="analysis4">Facebook Ads - Creative Performance</option>
-            <option value="analysis5">DV360 - Creative Performance</option>
-            <option value="analysis6">DV360 - Publisher Analysis</option>
-            <option value="analysis7">COMPLETE OVERVIEW</option>
+            <option value="Google Ads - Search Term Analyzer">Google Ads - Search Term Analyzer</option>
+            <option value="Google Ads - Campaign Performance">Google Ads - Campaign Performance</option>
+            <option value="Facebook Ads - Campaign Performance">Facebook Ads - Campaign Performance</option>
+            <option value="Facebook Ads - Creative Performance">Facebook Ads - Creative Performance</option>
+            <option value="DV360 - Creative Performance">DV360 - Creative Performance</option>
+            <option value="DV360 - Publisher Analysis">DV360 - Publisher Analysis</option>
+            <option value="Complete Overview">Complete Overview</option>
         </select>
         <div class="error" id="analysisError">אנא בחר סוג ניתוח.</div>
 
@@ -225,23 +225,34 @@
                 endDate = dates.endDate;
             }
 
-            const data = { client, analysis, preset, startDate, endDate };
+            const data = {
+                client,
+                analysis,
+                preset,
+                startDate,
+                endDate,
+            };
 
             fetch('https://hook.eu2.make.com/nu7wjjbbfdr1l9hu4m9zdkw3pybnab8z', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify(data),
             })
             .then(response => {
                 if (response.ok) {
                     alert('הנתונים נשלחו בהצלחה!');
                 } else {
-                    alert('חלה שגיאה בשליחת הנתונים.');
+                    return response.json().then(err => {
+                        console.error('שגיאה:', err);
+                        alert('חלה שגיאה בשליחת הנתונים: ' + JSON.stringify(err));
+                    });
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('חלה שגיאה בשליחת הנתונים.');
+                console.error('שגיאה כללית:', error);
+                alert('חלה שגיאה בשליחת הנתונים. אנא בדוק את החיבור או פנה למנהל המערכת.');
             });
         }
 

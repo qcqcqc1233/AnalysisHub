@@ -290,6 +290,8 @@
         }
 
         function submitForm() {
+            const client = document.getElementById('client').value;
+            const analysis = document.getElementById('analysis').value;
             const preset = document.getElementById('presetDates').value;
             const startDateInput = document.getElementById('startDate').value;
             const endDateInput = document.getElementById('endDate').value;
@@ -312,13 +314,20 @@
                 endDate = dates.endDate;
             }
 
+            if (!client || !analysis || !startDate || !endDate) {
+                alert('אנא מלא את כל השדות הנדרשים.');
+                return;
+            }
+
             const data = {
+                client,
+                analysis,
                 preset,
                 startDate,
                 endDate,
             };
 
-            fetch('https://webhook.make.com/your_webhook_url', {
+            fetch('https://hook.eu2.make.com/nu7wjjbbfdr1l9hu4m9zdkw3pybnab8z', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

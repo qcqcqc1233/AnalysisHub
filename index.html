@@ -191,16 +191,11 @@
         function handleDateSelection() {
             const preset = document.getElementById('presetDates').value;
             const customDateRange = document.getElementById('customDateRange');
-            const startDateInput = document.getElementById('startDate');
-            const endDateInput = document.getElementById('endDate');
-
-            startDateInput.value = '';
-            endDateInput.value = '';
 
             if (preset === 'custom') {
-                customDateRange.style.display = 'block';
+                customDateRange.style.display = 'block'; // מציג את שדות התאריכים
             } else {
-                customDateRange.style.display = 'none';
+                customDateRange.style.display = 'none'; // מסתיר את שדות התאריכים
             }
         }
 

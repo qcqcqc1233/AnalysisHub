@@ -145,13 +145,22 @@
         </select>
         <div class="error" id="analysisError">אנא בחר סוג ניתוח.</div>
 
-        <label for="startDate">תאריך התחלה:</label>
-        <input type="date" id="startDate">
-        <div class="error" id="startDateError">אנא בחר תאריך התחלה.</div>
+        <label for="presetDates">טווח תאריכים:</label>
+        <select id="presetDates" onchange="handleDateSelection()">
+            <option value="custom">-- מותאם אישית --</option>
+            <option value="lastWeek">שבוע שעבר</option>
+            <option value="lastMonth">חודש שעבר</option>
+            <option value="thisMonth">החודש הנוכחי</option>
+        </select>
 
-        <label for="endDate">תאריך סיום:</label>
-        <input type="date" id="endDate">
-        <div class="error" id="endDateError">אנא בחר תאריך סיום.</div>
+        <div id="customDateRange" style="display: none;">
+            <label for="startDate">תאריך התחלה:</label>
+            <input type="date" id="startDate">
+
+            <label for="endDate">תאריך סיום:</label>
+            <input type="date" id="endDate">
+        </div>
+        <div class="error" id="dateError">אנא בחר טווח תאריכים.</div>
 
         <button type="button" onclick="submitForm()">שגר</button>
     </form>
@@ -161,56 +170,80 @@
     </footer>
 
     <script>
+        function handleDateSelection() {
+            const preset = document.getElementById('presetDates').value;
+            const customDateRange = document.getElementById('customDateRange');
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+
+            startDateInput.value = '';
+            endDateInput.value = '';
+
+            if (preset === 'custom') {
+                customDateRange.style.display = 'block';
+            } else {
+                customDateRange.style.display = 'none';
+            }
+        }
+
+        function calculatePresetDates(preset) {
+            const today = new Date();
+            let startDate, endDate;
+
+            if (preset === 'lastWeek') {
+                const lastWeekStart = new Date();
+                lastWeekStart.setDate(today.getDate() - today.getDay() - 7);
+                const lastWeekEnd = new Date(lastWeekStart);
+                lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
+
+                startDate = lastWeekStart.toISOString().split('T')[0];
+                endDate = lastWeekEnd.toISOString().split('T')[0];
+            } else if (preset === 'lastMonth') {
+                const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+                const lastMonthStart = new Date(lastMonthEnd.getFullYear(), lastMonthEnd.getMonth(), 1);
+
+                startDate = lastMonthStart.toISOString().split('T')[0];
+                endDate = lastMonthEnd.toISOString().split('T')[0];
+            } else if (preset === 'thisMonth') {
+                const thisMonthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                const thisMonthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+                startDate = thisMonthStart.toISOString().split('T')[0];
+                endDate = thisMonthEnd.toISOString().split('T')[0];
+            }
+
+            return { startDate, endDate };
+        }
+
         function submitForm() {
-            const client = document.getElementById('client');
-            const analysis = document.getElementById('analysis');
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
+            const preset = document.getElementById('presetDates').value;
+            const startDateInput = document.getElementById('startDate').value;
+            const endDateInput = document.getElementById('endDate').value;
+            const dateError = document.getElementById('dateError');
 
-            const clientValue = client.value;
-            const clientText = client.options[client.selectedIndex].text;
+            let startDate, endDate;
 
-            const analysisValue = analysis.value;
-            const analysisText = analysis.options[analysis.selectedIndex].text;
+            dateError.style.display = 'none';
 
-            // הסתר הודעות שגיאה קודמות
-            document.getElementById('clientError').style.display = 'none';
-            document.getElementById('analysisError').style.display = 'none';
-            document.getElementById('startDateError').style.display = 'none';
-            document.getElementById('endDateError').style.display = 'none';
-
-            // בדיקות ולידציה
-            if (!clientValue) {
-                document.getElementById('clientError').style.display = 'block';
-                return;
+            if (preset !== 'custom') {
+                const dates = calculatePresetDates(preset);
+                startDate = dates.startDate;
+                endDate = dates.endDate;
+            } else {
+                if (!startDateInput || !endDateInput) {
+                    dateError.style.display = 'block';
+                    return;
+                }
+                startDate = startDateInput;
+                endDate = endDateInput;
             }
 
-            if (!analysisValue) {
-                document.getElementById('analysisError').style.display = 'block';
-                return;
-            }
-
-            if (!startDate) {
-                document.getElementById('startDateError').style.display = 'block';
-                return;
-            }
-
-            if (!endDate) {
-                document.getElementById('endDateError').style.display = 'block';
-                return;
-            }
-
-            // יצירת אובייקט הנתונים
             const data = {
-                client: clientText,
-                clientID: clientValue,
-                analysisType: analysisText,
-                analysisID: analysisValue,
-                startDate: startDate,
-                endDate: endDate
+                preset,
+                startDate,
+                endDate,
             };
 
-            // שליחה ל-MAKE
             fetch('https://webhook.make.com/your_webhook_url', {
                 method: 'POST',
                 headers: {

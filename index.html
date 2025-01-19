@@ -191,11 +191,10 @@
         function handleDateSelection() {
             const preset = document.getElementById('presetDates').value;
             const customDateRange = document.getElementById('customDateRange');
-
             if (preset === 'custom') {
-                customDateRange.style.display = 'block'; // מציג את שדות התאריכים
+                customDateRange.style.display = 'block';
             } else {
-                customDateRange.style.display = 'none'; // מסתיר את שדות התאריכים
+                customDateRange.style.display = 'none';
             }
         }
 
@@ -226,19 +225,11 @@
                 endDate = dates.endDate;
             }
 
-            const data = {
-                client,
-                analysis,
-                preset,
-                startDate,
-                endDate,
-            };
+            const data = { client, analysis, preset, startDate, endDate };
 
             fetch('https://hook.eu2.make.com/nu7wjjbbfdr1l9hu4m9zdkw3pybnab8z', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             })
             .then(response => {
@@ -275,65 +266,8 @@
                     endDate = thisWeekEnd.toISOString().split('T')[0];
                     break;
 
-                case 'lastMonth':
-                    const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
-                    const lastMonthStart = new Date(lastMonthEnd.getFullYear(), lastMonthEnd.getMonth(), 1);
-                    startDate = lastMonthStart.toISOString().split('T')[0];
-                    endDate = lastMonthEnd.toISOString().split('T')[0];
-                    break;
-
-                case 'thisMonth':
-                    const thisMonthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-                    const thisMonthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-                    startDate = thisMonthStart.toISOString().split('T')[0];
-                    endDate = thisMonthEnd.toISOString().split('T')[0];
-                    break;
-
-                case 'lastQuarter':
-                    const currentQuarter = Math.floor(today.getMonth() / 3);
-                    const lastQuarterStart = new Date(today.getFullYear(), (currentQuarter - 1) * 3, 1);
-                    const lastQuarterEnd = new Date(lastQuarterStart.getFullYear(), lastQuarterStart.getMonth() + 3, 0);
-                    startDate = lastQuarterStart.toISOString().split('T')[0];
-                    endDate = lastQuarterEnd.toISOString().split('T')[0];
-                    break;
-
-                case 'thisQuarter':
-                    const quarterStart = new Date(today.getFullYear(), Math.floor(today.getMonth() / 3) * 3, 1);
-                    const quarterEnd = new Date(quarterStart.getFullYear(), quarterStart.getMonth() + 3, 0);
-                    startDate = quarterStart.toISOString().split('T')[0];
-                    endDate = quarterEnd.toISOString().split('T')[0];
-                    break;
-
-                case 'lastHalfYear':
-                    const halfYearEnd = new Date(today.getFullYear(), today.getMonth() < 6 ? 0 : 6, 0);
-                    const halfYearStart = new Date(halfYearEnd.getFullYear(), halfYearEnd.getMonth() - 5, 1);
-                    startDate = halfYearStart.toISOString().split('T')[0];
-                    endDate = halfYearEnd.toISOString().split('T')[0];
-                    break;
-
-                case 'thisHalfYear':
-                    const halfYearStart = new Date(today.getFullYear(), today.getMonth() < 6 ? 0 : 6, 1);
-                    const halfYearEndThis = new Date(halfYearStart.getFullYear(), halfYearStart.getMonth() + 6, 0);
-                    startDate = halfYearStart.toISOString().split('T')[0];
-                    endDate = halfYearEndThis.toISOString().split('T')[0];
-                    break;
-
-                case 'lastYear':
-                    const lastYearStart = new Date(today.getFullYear() - 1, 0, 1);
-                    const lastYearEnd = new Date(today.getFullYear() - 1, 11, 31);
-                    startDate = lastYearStart.toISOString().split('T')[0];
-                    endDate = lastYearEnd.toISOString().split('T')[0];
-                    break;
-
-                case 'thisYear':
-                    const thisYearStart = new Date(today.getFullYear(), 0, 1);
-                    const thisYearEnd = new Date(today.getFullYear(), 11, 31);
-                    startDate = thisYearStart.toISOString().split('T')[0];
-                    endDate = thisYearEnd.toISOString().split('T')[0];
-                    break;
-
                 default:
-                    console.error("Preset not recognized");
+                    console.error('Preset not recognized');
             }
 
             return { startDate, endDate };

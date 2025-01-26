@@ -11,7 +11,7 @@
             font-family: 'Assistant', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* רקע מרהיב */
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* רקע כללי */
             color: #fff;
             overflow-x: hidden;
             display: flex;
@@ -27,8 +27,9 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: radial-gradient(circle, rgba(20, 30, 48, 1), rgba(36, 59, 85, 1));
+            background: linear-gradient(135deg, #000428, #004e92);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
@@ -37,14 +38,15 @@
             animation: fadeOut 1s 3s forwards;
         }
 
-        .welcome-text {
-            font-size: 3rem;
-            color: white;
+        .welcome-logo {
+            font-size: 3.5rem;
             font-weight: bold;
-            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
-            animation: glowText 1.5s infinite alternate;
+            color: white;
+            text-shadow: 0px 4px 15px rgba(255, 255, 255, 0.6);
+            animation: scaleUp 1.5s ease-out, glowText 2s infinite alternate;
         }
 
+        /* --- אנימציות --- */
         @keyframes fadeOut {
             0% {
                 opacity: 1;
@@ -55,9 +57,20 @@
             }
         }
 
+        @keyframes scaleUp {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         @keyframes glowText {
             0% {
-                text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+                text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.4);
             }
             100% {
                 text-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
@@ -94,7 +107,7 @@
         header img {
             width: 150px;
             margin-bottom: 10px;
-            filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.5));
+            filter: drop-shadow(0px 6px 20px rgba(0, 0, 0, 0.5));
         }
 
         header h1 {
@@ -168,7 +181,7 @@
 <body>
     <!-- מסך פתיחה -->
     <div class="welcome-screen">
-        <div class="welcome-text">ברוכים הבאים ל-Analysis Hub</div>
+        <div class="welcome-logo">Analysis Hub</div>
     </div>
 
     <!-- תוכן ראשי -->

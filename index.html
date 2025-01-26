@@ -11,9 +11,13 @@
             font-family: 'Assistant', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-            color: #333;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* רקע מרהיב */
+            color: #fff;
             overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         /* --- מסך פתיחה --- */
@@ -23,7 +27,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: radial-gradient(circle, #6a11cb, #2575fc);
+            background: radial-gradient(circle, rgba(20, 30, 48, 1), rgba(36, 59, 85, 1));
             display: flex;
             justify-content: center;
             align-items: center;
@@ -34,11 +38,11 @@
         }
 
         .welcome-text {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: white;
             font-weight: bold;
-            text-shadow: 0px 3px 10px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1.5s ease;
+            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+            animation: glowText 1.5s infinite alternate;
         }
 
         @keyframes fadeOut {
@@ -51,27 +55,31 @@
             }
         }
 
-        @keyframes fadeIn {
+        @keyframes glowText {
             0% {
-                opacity: 0;
-                transform: scale(0.95);
+                text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
             }
             100% {
-                opacity: 1;
-                transform: scale(1);
+                text-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
             }
         }
 
         /* --- תוכן ראשי --- */
         #mainContent {
             display: none;
+            opacity: 0;
             animation: fadeInMain 1s 3s forwards;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
         }
 
         @keyframes fadeInMain {
             0% {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             100% {
                 opacity: 1;
@@ -80,69 +88,71 @@
         }
 
         header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            margin-bottom: 30px;
         }
 
         header img {
-            width: 120px;
+            width: 150px;
             margin-bottom: 10px;
+            filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.5));
         }
 
         header h1 {
             font-size: 2.5rem;
-            color: #333;
+            color: #e3e3e3;
         }
 
         /* --- טופס --- */
         form {
-            background: white;
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
+            backdrop-filter: blur(10px); /* רקע מטושטש */
         }
 
         form label {
             font-size: 1rem;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: block;
+            color: #f0f0f0;
         }
 
         form select,
         form button,
         form input {
             width: 100%;
-            padding: 10px 15px;
+            padding: 12px 15px;
             margin-bottom: 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             border: 1px solid #ddd;
             font-size: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            outline: none;
         }
 
         form button {
             background: linear-gradient(90deg, #6a11cb, #2575fc);
-            color: white;
             font-weight: bold;
             border: none;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         form button:hover {
             transform: scale(1.05);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         footer {
             margin-top: 20px;
             text-align: center;
-            font-size: 0.85rem;
-            color: #555;
+            font-size: 0.9rem;
+            color: #ccc;
         }
 
         footer a {
@@ -187,23 +197,6 @@
                 <option value="DV360 - Publisher Analysis">DV360 - Publisher Analysis</option>
             </select>
 
-            <label for="dateRange">בחר טווח תאריכים:</label>
-            <select id="dateRange">
-                <option value="">-- בחר טווח --</option>
-                <option value="lastWeek">שבוע שעבר</option>
-                <option value="currentMonth">חודש נוכחי</option>
-                <option value="lastMonth">חודש שעבר</option>
-                <option value="custom">מותאם אישית</option>
-            </select>
-
-            <div id="customDates" style="display: none;">
-                <label for="startDate">מתאריך:</label>
-                <input type="date" id="startDate">
-
-                <label for="endDate">עד תאריך:</label>
-                <input type="date" id="endDate">
-            </div>
-
             <button type="button" onclick="submitForm()">שגר</button>
         </form>
 
@@ -219,27 +212,16 @@
             document.querySelector('#mainContent').style.display = 'block';
         }, 3000);
 
-        // הצגת שדות טווח מותאם אישית
-        document.getElementById('dateRange').addEventListener('change', function () {
-            const customDates = document.getElementById('customDates');
-            if (this.value === 'custom') {
-                customDates.style.display = 'block';
-            } else {
-                customDates.style.display = 'none';
-            }
-        });
-
         function submitForm() {
             const client = document.getElementById('client').value;
             const analysis = document.getElementById('analysis').value;
-            const dateRange = document.getElementById('dateRange').value;
 
-            if (!client || !analysis || !dateRange) {
+            if (!client || !analysis) {
                 alert('אנא מלא את כל השדות!');
                 return;
             }
 
-            alert(`הניתוח עבור ${client}, טווח: ${dateRange} נשלח בהצלחה!`);
+            alert(`הניתוח עבור ${client} מסוג ${analysis} נשלח בהצלחה!`);
         }
     </script>
 </body>

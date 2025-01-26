@@ -6,14 +6,17 @@
     <title>Analysis Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Assistant:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* --- עיצוב כללי --- */
         body {
             font-family: 'Assistant', sans-serif;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* למנוע גלילה בזמן מסך הפתיחה */
+            background: linear-gradient(135deg, #f3f4f6, #e9eff9);
+            color: #333;
+            overflow-x: hidden;
         }
 
-        /* מסך הפתיחה */
+        /* --- מסך פתיחה --- */
         .welcome-screen {
             position: fixed;
             top: 0;
@@ -21,86 +24,133 @@
             width: 100%;
             height: 100vh;
             background: linear-gradient(135deg, #8e44ad, #3498db);
-            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
             z-index: 9999;
-            opacity: 0;
-            transform: translateX(-20px);
-            animation: fadeInRight 1.5s ease forwards;
+            opacity: 1;
+            animation: fadeOut 1s 3s forwards;
         }
 
         .welcome-text {
-            font-size: 2rem;
-            font-weight: 600;
-            text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-            padding: 20px;
+            font-size: 2.5rem;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0px 3px 10px rgba(0, 0, 0, 0.5);
         }
 
-        @keyframes fadeInRight {
-            0% {
+        @keyframes fadeOut {
+            to {
                 opacity: 0;
-                transform: translateX(-20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
+                visibility: hidden;
             }
         }
 
-        /* התוכן הראשי */
+        /* --- תוכן ראשי --- */
         #mainContent {
             display: none;
-            animation: fadeInMain 1.5s ease forwards;
+            opacity: 0;
+            animation: fadeInMain 1s 3s forwards;
         }
 
         @keyframes fadeInMain {
-            0% {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            100% {
+            to {
                 opacity: 1;
-                transform: scale(1);
+                display: block;
             }
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        header img {
+            width: 120px;
+            margin-bottom: 10px;
         }
 
         header h1 {
             font-size: 2.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-            animation: fadeInMain 1.5s ease forwards;
+            color: #333;
         }
 
+        /* --- טופס --- */
         form {
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #333;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 400px;
-            animation: fadeInMain 1.5s ease forwards;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        form label {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        form select,
+        form button {
+            width: 100%;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        form button {
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        form button:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <!-- מסך הפתיחה -->
-    <div class="welcome-screen" id="welcomeScreen">
+    <!-- מסך פתיחה -->
+    <div class="welcome-screen">
         <div class="welcome-text">ברוכים הבאים ל-Analysis Hub</div>
     </div>
 
-    <!-- תוכן האתר -->
+    <!-- תוכן ראשי -->
     <div id="mainContent">
         <header>
+            <img src="KLogic_Big.png" alt="Analysis Hub Logo">
             <h1>Analysis Hub</h1>
         </header>
 
         <form>
-            <label for="client">לקוח:</label>
+            <label for="client">בחר לקוח:</label>
             <select id="client">
                 <option value="">-- בחר לקוח --</option>
                 <option value="IDI - 5">IDI - 5</option>
@@ -110,41 +160,39 @@
                 <option value="Champion">Champion</option>
             </select>
 
-            <label for="analysis">סוג ניתוח:</label>
+            <label for="analysis">בחר סוג ניתוח:</label>
             <select id="analysis">
                 <option value="">-- סוג ניתוח --</option>
-                <option value="Google Ads - Search Term Analyzer">Google Ads - Search Term Analyzer</option>
-                <option value="Google Ads - Campaign Performance">Google Ads - Campaign Performance</option>
-                <option value="Facebook Ads - Campaign Performance">Facebook Ads - Campaign Performance</option>
-                <option value="Facebook Ads - Creative Performance">Facebook Ads - Creative Performance</option>
-                <option value="DV360 - Creative Performance">DV360 - Creative Performance</option>
+                <option value="Google Ads - Campaign">Google Ads - Campaign</option>
+                <option value="Facebook Ads - Creative">Facebook Ads - Creative</option>
                 <option value="DV360 - Publisher Analysis">DV360 - Publisher Analysis</option>
-                <option value="Complete Overview">Complete Overview</option>
             </select>
 
             <button type="button" onclick="submitForm()">שגר</button>
         </form>
+
+        <footer>
+            © 2025 <a href="#">Analysis Hub</a> - כל הזכויות שמורות.
+        </footer>
     </div>
 
     <script>
         // הצגת התוכן הראשי לאחר מסך הפתיחה
         setTimeout(() => {
-            document.getElementById('welcomeScreen').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
-            document.body.style.overflow = 'auto'; // לאפשר גלילה אחרי מסך הפתיחה
-        }, 3000);
+            document.querySelector('.welcome-screen').style.display = 'none';
+            document.querySelector('#mainContent').style.display = 'block';
+        }, 4000);
 
-        // פונקציה לשיגור הטופס
         function submitForm() {
             const client = document.getElementById('client').value;
             const analysis = document.getElementById('analysis').value;
 
             if (!client || !analysis) {
-                alert('אנא מלא את כל השדות!');
+                alert('אנא בחר לקוח וסוג ניתוח!');
                 return;
             }
 
-            alert(`הניתוח עבור ${client} בסוג ${analysis} נשלח בהצלחה!`);
+            alert(`הניתוח עבור ${client} מסוג ${analysis} נשלח בהצלחה!`);
         }
     </script>
 </body>

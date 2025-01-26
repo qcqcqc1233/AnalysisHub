@@ -29,7 +29,7 @@
             z-index: 9999;
             opacity: 0;
             transform: translateX(-20px);
-            animation: fadeInRight 3s ease forwards;
+            animation: fadeInRight 1.5s ease forwards;
         }
 
         .welcome-text {
@@ -50,37 +50,21 @@
             }
         }
 
-        /* התאמות למובייל */
-        @media (max-width: 768px) {
-            .welcome-text {
-                font-size: 1.5rem;
-                padding: 10px;
+        /* התוכן הראשי */
+        #mainContent {
+            display: none;
+            animation: fadeInMain 1.5s ease forwards;
+        }
+
+        @keyframes fadeInMain {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
             }
-        }
-
-        /* תוכן האתר */
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #8e44ad, #3498db);
-            color: white;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        header img {
-            max-width: 180px;
-            margin-bottom: 20px;
-            animation: fadeIn 1s ease-in-out;
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         header h1 {
@@ -88,11 +72,7 @@
             font-weight: 700;
             color: #ffffff;
             text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            animation: fadeInMain 1.5s ease forwards;
         }
 
         form {
@@ -103,71 +83,19 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
-            animation: fadeIn 1.2s ease-in-out;
-        }
-
-        label {
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: block;
-            font-size: 1.1rem;
-        }
-
-        select, input, button {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        select, input {
-            background-color: #f9f9f9;
-        }
-
-        button {
-            background: linear-gradient(90deg, #6a11cb, #2575fc);
-            color: white;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        button:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-
-        footer {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.8);
-            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        footer a {
-            color: #ffcc00;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
+            animation: fadeInMain 1.5s ease forwards;
         }
     </style>
 </head>
 <body>
-    <!-- מסך פתיחה -->
+    <!-- מסך הפתיחה -->
     <div class="welcome-screen" id="welcomeScreen">
         <div class="welcome-text">ברוכים הבאים ל-Analysis Hub</div>
     </div>
 
     <!-- תוכן האתר -->
-    <div id="mainContent" style="display: none;">
+    <div id="mainContent">
         <header>
-            <img src="KLogic_Big.png" alt="Company Logo">
             <h1>Analysis Hub</h1>
         </header>
 
@@ -196,14 +124,10 @@
 
             <button type="button" onclick="submitForm()">שגר</button>
         </form>
-
-        <footer>
-            © 2025 <a href="#">סיון ברגר</a> | כל הזכויות שמורות.
-        </footer>
     </div>
 
     <script>
-        // מחיקת מסך הפתיחה לאחר 3 שניות
+        // הצגת התוכן הראשי לאחר מסך הפתיחה
         setTimeout(() => {
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';

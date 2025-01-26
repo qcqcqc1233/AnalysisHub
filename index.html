@@ -11,7 +11,7 @@
             font-family: 'Assistant', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* רקע קבוע */
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* רקע אחיד */
             color: white;
             overflow-x: hidden;
             min-height: 100vh;
@@ -35,7 +35,7 @@
             z-index: 9999;
             background: inherit; /* רקע זהה */
             opacity: 1;
-            animation: fadeOut 1s 2.5s forwards; /* פייד חלק */
+            animation: fadeOut 1s 2.5s forwards; /* אפקט פייד בלבד */
         }
 
         .welcome-logo {
@@ -43,7 +43,7 @@
             font-weight: bold;
             color: white;
             opacity: 0;
-            animation: fadeIn 1s ease-in forwards;
+            animation: fadeIn 1s ease-in forwards; /* פייד נקי */
         }
 
         /* --- אנימציות --- */
@@ -69,7 +69,7 @@
         /* --- תוכן ראשי --- */
         #mainContent {
             opacity: 0;
-            animation: fadeInContent 1s 3s forwards; /* פייד חלק לתוכן */
+            animation: fadeInMain 1s 3s forwards; /* פייד חלק לתוכן */
             width: 100%;
             max-width: 800px;
             padding: 20px;
@@ -77,7 +77,7 @@
             text-align: center;
         }
 
-        @keyframes fadeInContent {
+        @keyframes fadeInMain {
             0% {
                 opacity: 0;
             }

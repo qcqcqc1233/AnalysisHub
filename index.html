@@ -11,7 +11,7 @@
             font-family: 'Assistant', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* רקע אחיד */
+            background: linear-gradient(135deg, #2b5876, #4e4376); /* רקע אחיד */
             color: white;
             overflow-x: hidden;
             min-height: 100vh;
@@ -35,7 +35,7 @@
             z-index: 9999;
             background: inherit; /* רקע זהה */
             opacity: 1;
-            animation: fadeOut 1s 2.5s forwards; /* אפקט פייד בלבד */
+            animation: fadeOut 1s 2.5s forwards;
         }
 
         .welcome-logo {
@@ -43,7 +43,7 @@
             font-weight: bold;
             color: white;
             opacity: 0;
-            animation: fadeIn 1s ease-in forwards; /* פייד נקי */
+            animation: fadeIn 1s ease-in forwards;
         }
 
         /* --- אנימציות --- */
@@ -69,7 +69,7 @@
         /* --- תוכן ראשי --- */
         #mainContent {
             opacity: 0;
-            animation: fadeInMain 1s 3s forwards; /* פייד חלק לתוכן */
+            animation: fadeInMain 1s 3s forwards;
             width: 100%;
             max-width: 800px;
             padding: 20px;
@@ -100,18 +100,19 @@
         /* --- טופס --- */
         form {
             background: rgba(255, 255, 255, 0.1);
-            padding: 25px 30px;
+            padding: 30px 40px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
             margin: 0 auto;
         }
 
         form label {
-            font-size: 1rem;
+            font-size: 1.1rem;
             margin-bottom: 8px;
             display: block;
+            text-align: right;
         }
 
         form select,
@@ -119,7 +120,7 @@
         form input {
             width: 100%;
             padding: 12px 15px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             border-radius: 8px;
             border: 1px solid #ddd;
             font-size: 1rem;
@@ -127,17 +128,18 @@
             color: white;
             outline: none;
             transition: all 0.3s ease;
+            text-align: right;
         }
 
         form select:hover,
         form select:focus,
         form input:hover,
         form input:focus {
-            border-color: #6a11cb;
+            border-color: #50c7f3;
         }
 
         form button {
-            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            background: linear-gradient(90deg, #50c7f3, #4a90e2);
             font-weight: bold;
             border: none;
             cursor: pointer;
@@ -146,7 +148,7 @@
 
         form button:hover {
             transform: scale(1.05);
-            box-shadow: 0px 6px 16px rgba(106, 17, 203, 0.4);
+            box-shadow: 0px 6px 16px rgba(80, 199, 243, 0.4);
         }
 
         footer {
@@ -157,7 +159,7 @@
         }
 
         footer a {
-            color: #6a11cb;
+            color: #50c7f3;
             text-decoration: none;
         }
 
@@ -214,6 +216,10 @@
                 <option value="DV360 - Publisher Analysis">DV360 - Publisher Analysis</option>
             </select>
 
+            <label for="date">בחר טווח תאריכים:</label>
+            <input type="date" id="startDate" placeholder="תאריך התחלה">
+            <input type="date" id="endDate" placeholder="תאריך סיום">
+
             <button type="button" onclick="submitForm()">שגר</button>
         </form>
 
@@ -223,22 +229,18 @@
     </div>
 
     <script>
-        // הצגת התוכן הראשי לאחר מסך הפתיחה
-        setTimeout(() => {
-            document.querySelector('.welcome-screen').style.display = 'none';
-            document.querySelector('#mainContent').style.display = 'block';
-        }, 3000);
-
         function submitForm() {
             const client = document.getElementById('client').value;
             const analysis = document.getElementById('analysis').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
 
-            if (!client || !analysis) {
+            if (!client || !analysis || !startDate || !endDate) {
                 alert('אנא מלא את כל השדות!');
                 return;
             }
 
-            alert(`הניתוח עבור ${client} מסוג ${analysis} נשלח בהצלחה!`);
+            alert(`הניתוח עבור ${client}, מסוג ${analysis}, בין התאריכים ${startDate} ל-${endDate} נשלח בהצלחה!`);
         }
     </script>
 </body>

@@ -4,263 +4,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analysis Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Assistant:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- עיצוב כללי --- */
         body {
             font-family: 'Assistant', sans-serif;
-            margin: 0;
-            padding: 0;
             background: linear-gradient(135deg, #0f2027, #1f3a3d, #2b5153);
             color: white;
-            overflow-x: hidden;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
         }
 
-        .welcome-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 9999;
-            background: inherit;
-            opacity: 1;
-            animation: fadeOut 1s 2.5s forwards;
+        header img {
+            width: 120px;
+            margin-bottom: 15px;
         }
 
-        .welcome-logo {
-            font-size: 3rem;
-            font-weight: bold;
-            color: white;
-            opacity: 0;
-            animation: fadeIn 1s ease-in forwards;
-        }
-
-        @keyframes fadeOut {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                visibility: hidden;
-            }
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-
-        #mainContent {
-            opacity: 0;
-            animation: fadeInMain 1s 3s forwards;
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        @keyframes fadeInMain {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
         }
 
         form {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             width: 100%;
             max-width: 500px;
-            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         form label {
-            font-size: 1.1rem;
-            margin-bottom: 8px;
             display: block;
-            text-align: right;
+            margin-bottom: 8px;
+            font-size: 1rem;
         }
 
         form select,
         form button,
         form input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 10px;
             margin-bottom: 20px;
-            border-radius: 8px;
+            border-radius: 5px;
             border: 1px solid #ddd;
-            font-size: 1rem;
             background: rgba(255, 255, 255, 0.2);
             color: white;
             outline: none;
-            transition: all 0.3s ease;
-            text-align: center;
-            text-align-last: center;
-        }
-
-        form select:hover,
-        form select:focus,
-        form input:hover,
-        form input:focus {
-            border-color: #6a11cb;
-            background: rgba(255, 255, 255, 0.9);
-            color: black;
         }
 
         form button {
             background: linear-gradient(90deg, #6a11cb, #2575fc);
             font-weight: bold;
-            border: none;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: none;
+            transition: 0.2s ease;
         }
 
         form button:hover {
             transform: scale(1.05);
-            box-shadow: 0px 6px 16px rgba(106, 17, 203, 0.4);
         }
 
         footer {
             margin-top: 20px;
-            font-size: 0.85rem;
-            color: #ccc;
             text-align: center;
-        }
-
-        footer a {
-            color: #6a11cb;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            form {
-                padding: 20px 15px;
-            }
-
-            form select,
-            form button {
-                font-size: 0.9rem;
-            }
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
-    <div class="welcome-screen">
-        <div class="welcome-logo">Analysis Hub</div>
-    </div>
+    <header>
+        <img src="KLogic_Big.png" alt="Analysis Hub Logo">
+        <h1>Analysis Hub</h1>
+    </header>
 
-    <div id="mainContent">
-        <header>
-            <img src="KLogic_Big.png" alt="Analysis Hub Logo">
-            <h1>Analysis Hub</h1>
-        </header>
+    <form>
+        <label for="client">בחר לקוח:</label>
+        <select id="client">
+            <option value="">-- בחר לקוח --</option>
+            <option value="IDI - 5">IDI - 5</option>
+            <option value="IDI - 9">IDI - 9</option>
+        </select>
 
-        <form>
-            <label for="client">בחר לקוח:</label>
-            <select id="client">
-                <option value="">-- בחר לקוח --</option>
-                <option value="IDI - 5">IDI - 5</option>
-                <option value="IDI - 9">IDI - 9</option>
-                <option value="Isracard">Isracard</option>
-                <option value="HOT">HOT</option>
-                <option value="Champion">Champion</option>
-            </select>
+        <label for="analysis">בחר סוג ניתוח:</label>
+        <select id="analysis">
+            <option value="">-- סוג ניתוח --</option>
+            <option value="Google Ads - Campaign Analyzer">Google Ads - Campaign Analyzer</option>
+            <option value="Google Ads - Search Term Analyzer">Google Ads - Search Term Analyzer</option>
+        </select>
 
-            <label for="analysis">בחר סוג ניתוח:</label>
-            <select id="analysis">
-                <option value="">-- סוג ניתוח --</option>
-                <option value="Google Ads - Campaign Analyzer">Google Ads - Campaign Analyzer</option>
-                <option value="Google Ads - Search Term Analyzer">Google Ads - Search Term Analyzer</option>
-                <option value="Facebook Ads - Creative Analyzer">Facebook Ads - Creative Analyzer</option>
-                <option value="DV360 - Publisher Analyzer">DV360 - Publisher Analyzer</option>
-            </select>
+        <label for="dateRange">בחר טווח תאריכים:</label>
+        <select id="dateRange">
+            <option value="">-- בחירת טווח --</option>
+            <option value="thisWeek">השבוע</option>
+            <option value="lastWeek">שבוע שעבר</option>
+        </select>
 
-            <label for="dateRange">בחר טווח תאריכים:</label>
-            <select id="dateRange">
-                <option value="">-- בחירת טווח --</option>
-                <option value="thisWeek">השבוע</option>
-                <option value="lastWeek">שבוע שעבר</option>
-                <option value="thisMonth">חודש נוכחי</option>
-                <option value="lastMonth">חודש שעבר</option>
-                <option value="custom">מותאם אישית</option>
-            </select>
+        <div id="customDates" style="display: none;">
+            <input type="date" id="startDate" placeholder="תאריך התחלה">
+            <input type="date" id="endDate" placeholder="תאריך סיום">
+        </div>
 
-            <div id="customDates" style="display: none;">
-                <input type="date" id="startDate" placeholder="תאריך התחלה">
-                <input type="date" id="endDate" placeholder="תאריך סיום">
-            </div>
+        <button type="button" onclick="submitForm()">שגר</button>
+    </form>
 
-            <button type="button" onclick="submitForm()">שגר</button>
-        </form>
-
-        <footer>
-            © 2025 <a href="#">Analysis Hub</a> - כל הזכויות שמורות.
-        </footer>
-    </div>
+    <footer>
+        © 2025 <a href="#">Analysis Hub</a>
+    </footer>
 
     <script>
-        const webhookUrl = "https://hook.eu2.make.com/nu7wjjbbfdr1l9hu4m9zdkw3pybnab8z";
-
-        function calculateDateRange(range) {
-            const today = new Date();
-            let startDate, endDate;
-
-            switch (range) {
-                case "thisWeek":
-                    const firstDay = today.getDate() - today.getDay() + 1;
-                    startDate = new Date(today.setDate(firstDay));
-                    endDate = new Date(today.setDate(firstDay + 6));
-                    break;
-
-                case "lastWeek":
-                    const firstLastWeek = today.getDate() - today.getDay() - 6;
-                    startDate = new Date(today.setDate(firstLastWeek));
-                    endDate = new Date(today.setDate(firstLastWeek + 6));
-                    break;
-
-                case "thisMonth":
-                    startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-                    endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-                    break;
-
-                case "lastMonth":
-                    startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-                    endDate = new Date(today.getFullYear(), today.getMonth(), 0);
-                    break;
-
-                default:
-                    startDate = null;
-                    endDate = null;
-            }
-
-            return {
-                startDate: startDate ? startDate.toISOString().split("T")[0] : null,
-                endDate: endDate ? endDate.toISOString().split("T")[0] : null,
-            };
-        }
+        const webhookUrl = "https://hook.eu2.make.com/9ynbuyp55oi443jae9yu34lfn3ws0dqx";
 
         const dateRange = document.getElementById("dateRange");
         const customDates = document.getElementById("customDates");
@@ -283,10 +140,11 @@
             if (dateRangeValue === "custom") {
                 startDate = document.getElementById("startDate").value;
                 endDate = document.getElementById("endDate").value;
-            } else {
-                const dates = calculateDateRange(dateRangeValue);
-                startDate = dates.startDate;
-                endDate = dates.endDate;
+            } else if (dateRangeValue === "thisWeek") {
+                const today = new Date();
+                const firstDay = today.getDate() - today.getDay() + 1;
+                startDate = new Date(today.setDate(firstDay)).toISOString().split("T")[0];
+                endDate = new Date(today.setDate(firstDay + 6)).toISOString().split("T")[0];
             }
 
             if (!client || !analysis || !startDate || !endDate) {
@@ -294,30 +152,19 @@
                 return;
             }
 
-            const data = {
-                client,
-                analysis,
-                startDate,
-                endDate,
-            };
+            const data = { client, analysis, startDate, endDate };
 
             try {
                 const response = await fetch(webhookUrl, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data),
                 });
 
                 if (response.ok) {
-                    alert(`הנתונים נשלחו בהצלחה! 
-לקוח: ${client}
-סוג ניתוח: ${analysis}
-תאריך התחלה: ${startDate}
-תאריך סיום: ${endDate}`);
+                    alert(`הנתונים נשלחו בהצלחה!`);
                 } else {
-                    alert("אירעה שגיאה בשליחת הנתונים. אנא נסה שוב.");
+                    alert("אירעה שגיאה בשליחת הנתונים.");
                 }
             } catch (error) {
                 alert("אירעה שגיאה: " + error.message);

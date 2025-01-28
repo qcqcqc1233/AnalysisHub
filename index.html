@@ -17,6 +17,38 @@
             min-height: 100vh;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+        }
+
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 1s 3s forwards;
+        }
+
+        .welcome-logo {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        #mainContent {
+            opacity: 0;
+            animation: fadeInMain 1s 3.5s forwards;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
         }
 
         header img {
@@ -30,18 +62,20 @@
         }
 
         form {
-            width: 100%;
-            max-width: 500px;
             background: rgba(255, 255, 255, 0.1);
             padding: 30px;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         form label {
             display: block;
             margin-bottom: 8px;
             font-size: 1rem;
+            text-align: right;
         }
 
         form select,
@@ -74,51 +108,86 @@
             text-align: center;
             font-size: 0.8rem;
         }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInMain {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <img src="KLogic_Big.png" alt="Analysis Hub Logo">
-        <h1>Analysis Hub</h1>
-    </header>
+    <!-- מסך פתיחה -->
+    <div class="welcome-screen">
+        <div class="welcome-logo">Analysis Hub</div>
+    </div>
 
-    <form>
-        <label for="client">בחר לקוח:</label>
-        <select id="client">
-            <option value="">-- בחר לקוח --</option>
-            <option value="IDI - 5">IDI - 5</option>
-            <option value="IDI - 9">IDI - 9</option>
-        </select>
+    <!-- תוכן ראשי -->
+    <div id="mainContent">
+        <header>
+            <img src="KLogic_Big.png" alt="Analysis Hub Logo">
+            <h1>Analysis Hub</h1>
+        </header>
 
-        <label for="analysis">בחר סוג ניתוח:</label>
-        <select id="analysis">
-            <option value="">-- סוג ניתוח --</option>
-            <option value="Google Ads - Campaign Analyzer">Google Ads - Campaign Analyzer</option>
-            <option value="Google Ads - Search Term Analyzer">Google Ads - Search Term Analyzer</option>
-        </select>
+        <form>
+            <label for="client">בחר לקוח:</label>
+            <select id="client">
+                <option value="">-- בחר לקוח --</option>
+                <option value="IDI - 5">IDI - 5</option>
+                <option value="IDI - 9">IDI - 9</option>
+            </select>
 
-        <label for="dateRange">בחר טווח תאריכים:</label>
-        <select id="dateRange">
-            <option value="">-- בחירת טווח --</option>
-            <option value="thisWeek">השבוע</option>
-            <option value="lastWeek">שבוע שעבר</option>
-        </select>
+            <label for="analysis">בחר סוג ניתוח:</label>
+            <select id="analysis">
+                <option value="">-- סוג ניתוח --</option>
+                <option value="Google Ads - Campaign Analyzer">Google Ads - Campaign Analyzer</option>
+                <option value="Google Ads - Search Term Analyzer">Google Ads - Search Term Analyzer</option>
+            </select>
 
-        <div id="customDates" style="display: none;">
-            <input type="date" id="startDate" placeholder="תאריך התחלה">
-            <input type="date" id="endDate" placeholder="תאריך סיום">
-        </div>
+            <label for="dateRange">בחר טווח תאריכים:</label>
+            <select id="dateRange">
+                <option value="">-- בחירת טווח --</option>
+                <option value="thisWeek">השבוע</option>
+                <option value="lastWeek">שבוע שעבר</option>
+                <option value="custom">מותאם אישית</option>
+            </select>
 
-        <button type="button" onclick="submitForm()">שגר</button>
-    </form>
+            <div id="customDates" style="display: none;">
+                <input type="date" id="startDate" placeholder="תאריך התחלה">
+                <input type="date" id="endDate" placeholder="תאריך סיום">
+            </div>
 
-    <footer>
-        © 2025 <a href="#">Analysis Hub</a>
-    </footer>
+            <button type="button" onclick="submitForm()">שגר</button>
+        </form>
+
+        <footer>
+            © 2025 <a href="#">Analysis Hub</a>
+        </footer>
+    </div>
 
     <script>
-        const webhookUrl = "https://hook.eu2.make.com/9ynbuyp55oi443jae9yu34lfn3ws0dqx";
-
         const dateRange = document.getElementById("dateRange");
         const customDates = document.getElementById("customDates");
 
@@ -154,21 +223,7 @@
 
             const data = { client, analysis, startDate, endDate };
 
-            try {
-                const response = await fetch(webhookUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data),
-                });
-
-                if (response.ok) {
-                    alert(`הנתונים נשלחו בהצלחה!`);
-                } else {
-                    alert("אירעה שגיאה בשליחת הנתונים.");
-                }
-            } catch (error) {
-                alert("אירעה שגיאה: " + error.message);
-            }
+            alert(`נשלח בהצלחה: ${JSON.stringify(data)}`);
         }
     </script>
 </body>

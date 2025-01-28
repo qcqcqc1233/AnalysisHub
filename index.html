@@ -11,7 +11,7 @@
             font-family: 'Assistant', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0f2027, #1f3a3d, #2b5153); /* רקע שחור-ירקרק */
+            background: linear-gradient(135deg, #0f2027, #1f3a3d, #2b5153);
             color: white;
             overflow-x: hidden;
             min-height: 100vh;
@@ -33,7 +33,7 @@
             align-items: center;
             text-align: center;
             z-index: 9999;
-            background: inherit; /* ירושה ישירה מהרקע הראשי */
+            background: inherit;
             opacity: 1;
             animation: fadeOut 1s 2.5s forwards;
         }
@@ -128,8 +128,8 @@
             color: white;
             outline: none;
             transition: all 0.3s ease;
-            text-align: center; /* ממורכז אופקית */
-            text-align-last: center; /* מרכז את הטקסט בפריטים */
+            text-align: center;
+            text-align-last: center;
         }
 
         form select:hover,
@@ -150,11 +150,6 @@
             text-align: center;
         }
 
-        form button:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 6px 16px rgba(106, 17, 203, 0.4);
-        }
-
         footer {
             margin-top: 20px;
             font-size: 0.85rem;
@@ -171,7 +166,6 @@
             text-decoration: underline;
         }
 
-        /* --- רספונסיביות --- */
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.5rem;
@@ -189,12 +183,10 @@
     </style>
 </head>
 <body>
-    <!-- מסך פתיחה -->
     <div class="welcome-screen">
         <div class="welcome-logo">Analysis Hub</div>
     </div>
 
-    <!-- תוכן ראשי -->
     <div id="mainContent">
         <header>
             <img src="KLogic_Big.png" alt="Analysis Hub Logo">
@@ -215,10 +207,10 @@
             <label for="analysis">בחר סוג ניתוח:</label>
             <select id="analysis">
                 <option value="">-- סוג ניתוח --</option>
-                <option value="Google Ads - Campaign">Google Ads - Campaign Analyzer</option>
-                <option value="Google Ads - Campaign">Google Ads - Search Term Analyzer</option>
-                <option value="Facebook Ads - Creative">Facebook Ads - Creative Analyzer</option>
-                <option value="DV360 - Publisher Analysis">DV360 - Publisher Analyzer</option>
+                <option value="Google Ads - Campaign Analyzer">Google Ads - Campaign Analyzer</option>
+                <option value="Google Ads - Search Term Analyzer">Google Ads - Search Term Analyzer</option>
+                <option value="Facebook Ads - Creative Analyzer">Facebook Ads - Creative Analyzer</option>
+                <option value="DV360 - Publisher Analyzer">DV360 - Publisher Analyzer</option>
             </select>
 
             <label for="date">בחר טווח תאריכים:</label>
@@ -245,6 +237,44 @@
     </div>
 
     <script>
+        function calculateDateRange(range) {
+            const today = new Date();
+            let startDate, endDate;
+
+            switch (range) {
+                case "thisWeek":
+                    const firstDay = today.getDate() - today.getDay() + 1;
+                    startDate = new Date(today.setDate(firstDay));
+                    endDate = new Date(today.setDate(firstDay + 6));
+                    break;
+
+                case "lastWeek":
+                    const firstLastWeek = today.getDate() - today.getDay() - 6;
+                    startDate = new Date(today.setDate(firstLastWeek));
+                    endDate = new Date(today.setDate(firstLastWeek + 6));
+                    break;
+
+                case "thisMonth":
+                    startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                    endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                    break;
+
+                case "lastMonth":
+                    startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    endDate = new Date(today.getFullYear(), today.getMonth(), 0);
+                    break;
+
+                default:
+                    startDate = null;
+                    endDate = null;
+            }
+
+            return {
+                startDate: startDate ? startDate.toISOString().split("T")[0] : null,
+                endDate: endDate ? endDate.toISOString().split("T")[0] : null,
+            };
+        }
+
         const dateRange = document.getElementById("dateRange");
         const customDates = document.getElementById("customDates");
 
@@ -261,28 +291,30 @@
             const analysis = document.getElementById("analysis").value;
             const dateRangeValue = document.getElementById("dateRange").value;
 
-            if (!client || !analysis || !dateRangeValue) {
+            let startDate, endDate;
+            if (dateRangeValue === "custom") {
+                startDate = document.getElementById("startDate").value;
+                endDate = document.getElementById("endDate").value;
+            } else {
+                const dates = calculateDateRange(dateRangeValue);
+                startDate = dates.startDate;
+                endDate = dates.endDate;
+            }
+
+            if (!client || !analysis || !startDate || !endDate) {
                 alert("אנא מלא את כל השדות!");
                 return;
             }
 
-            if (dateRangeValue === "custom") {
-                const startDate = document.getElementById("startDate").value;
-                const endDate = document.getElementById("endDate").value;
+            const data = {
+                client,
+                analysis,
+                startDate,
+                endDate,
+            };
 
-                if (!startDate || !endDate) {
-                    alert("אנא מלא את טווח התאריכים המותאם אישית!");
-                    return;
-                }
-
-                alert(
-                    `הניתוח עבור ${client}, מסוג ${analysis}, בין התאריכים ${startDate} ל-${endDate} נשלח בהצלחה!`
-                );
-            } else {
-                alert(
-                    `הניתוח עבור ${client}, מסוג ${analysis}, עבור הטווח ${dateRangeValue} נשלח בהצלחה!`
-                );
-            }
+            console.log("Data to send:", data);
+            alert(`הנתונים נשלחו בהצלחה: ${JSON.stringify(data)}`);
         }
     </script>
 </body>

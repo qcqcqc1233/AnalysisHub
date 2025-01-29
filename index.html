@@ -87,8 +87,19 @@
             border-radius: 5px;
             border: 1px solid #ddd;
             background: rgba(255, 255, 255, 0.2);
-            color: black; /* תיקון צבע הטקסט בדרופדאונים */
+            color: white; /* טקסט לבן בשדה הבחירה */
             outline: none;
+            appearance: none;
+        }
+
+        form select option {
+            background-color: white; /* רקע לבן */
+            color: black; /* טקסט שחור בתוך הדרופדאון */
+        }
+
+        form select:focus {
+            background: white;
+            color: black;
         }
 
         form button {
@@ -186,15 +197,13 @@
     </div>
 
     <script>
+        const webhookUrl = "https://hook.eu2.make.com/9ynbuyp55oi443jae9yu34lfn3ws0dqx"; 
+
         const dateRange = document.getElementById("dateRange");
         const customDates = document.getElementById("customDates");
 
         dateRange.addEventListener("change", () => {
-            if (dateRange.value === "custom") {
-                customDates.style.display = "block";
-            } else {
-                customDates.style.display = "none";
-            }
+            customDates.style.display = dateRange.value === "custom" ? "block" : "none";
         });
 
         async function submitForm() {
@@ -207,15 +216,6 @@
             if (dateRangeValue === "custom") {
                 startDate = document.getElementById("startDate").value.trim();
                 endDate = document.getElementById("endDate").value.trim();
-            } else {
-                const today = new Date();
-                if (dateRangeValue === "thisWeek") {
-                    startDate = new Date(today.setDate(today.getDate() - today.getDay() + 1)).toISOString().split("T")[0];
-                    endDate = new Date(today.setDate(today.getDate() + 6)).toISOString().split("T")[0];
-                } else if (dateRangeValue === "lastWeek") {
-                    startDate = new Date(today.setDate(today.getDate() - today.getDay() - 6)).toISOString().split("T")[0];
-                    endDate = new Date(today.setDate(today.getDate() + 6)).toISOString().split("T")[0];
-                }
             }
 
             if (!client || !analysis || !startDate || !endDate) {
@@ -223,13 +223,20 @@
                 return;
             }
 
-            console.log({ client, analysis, startDate, endDate });
+            const data = { client, analysis, startDate, endDate };
 
-            alert(`נשלח בהצלחה:
-לקוח: ${client}
-ניתוח: ${analysis}
-תאריך התחלה: ${startDate}
-תאריך סיום: ${endDate}`);
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) alert("הנתונים נשלחו בהצלחה!");
+                else alert("אירעה שגיאה בשליחת הנתונים.");
+            } catch (error) {
+                alert("אירעה שגיאה: " + error.message);
+            }
         }
     </script>
 </body>

@@ -87,7 +87,7 @@
             border-radius: 5px;
             border: 1px solid #ddd;
             background: rgba(255, 255, 255, 0.2);
-            color: white;
+            color: black; /* תיקון צבע הטקסט בדרופדאונים */
             outline: none;
         }
 
@@ -139,12 +139,10 @@
     </style>
 </head>
 <body>
-    <!-- מסך פתיחה -->
     <div class="welcome-screen">
         <div class="welcome-logo">Analysis Hub</div>
     </div>
 
-    <!-- תוכן ראשי -->
     <div id="mainContent">
         <header>
             <img src="KLogic_Big.png" alt="Analysis Hub Logo">
@@ -175,8 +173,8 @@
             </select>
 
             <div id="customDates" style="display: none;">
-                <input type="date" id="startDate" placeholder="תאריך התחלה">
-                <input type="date" id="endDate" placeholder="תאריך סיום">
+                <input type="date" id="startDate">
+                <input type="date" id="endDate">
             </div>
 
             <button type="button" onclick="submitForm()">שגר</button>
@@ -200,20 +198,24 @@
         });
 
         async function submitForm() {
-            const client = document.getElementById("client").value;
-            const analysis = document.getElementById("analysis").value;
-            const dateRangeValue = document.getElementById("dateRange").value;
+            const client = document.getElementById("client").value.trim();
+            const analysis = document.getElementById("analysis").value.trim();
+            const dateRangeValue = document.getElementById("dateRange").value.trim();
 
             let startDate, endDate;
 
             if (dateRangeValue === "custom") {
-                startDate = document.getElementById("startDate").value;
-                endDate = document.getElementById("endDate").value;
-            } else if (dateRangeValue === "thisWeek") {
+                startDate = document.getElementById("startDate").value.trim();
+                endDate = document.getElementById("endDate").value.trim();
+            } else {
                 const today = new Date();
-                const firstDay = today.getDate() - today.getDay() + 1;
-                startDate = new Date(today.setDate(firstDay)).toISOString().split("T")[0];
-                endDate = new Date(today.setDate(firstDay + 6)).toISOString().split("T")[0];
+                if (dateRangeValue === "thisWeek") {
+                    startDate = new Date(today.setDate(today.getDate() - today.getDay() + 1)).toISOString().split("T")[0];
+                    endDate = new Date(today.setDate(today.getDate() + 6)).toISOString().split("T")[0];
+                } else if (dateRangeValue === "lastWeek") {
+                    startDate = new Date(today.setDate(today.getDate() - today.getDay() - 6)).toISOString().split("T")[0];
+                    endDate = new Date(today.setDate(today.getDate() + 6)).toISOString().split("T")[0];
+                }
             }
 
             if (!client || !analysis || !startDate || !endDate) {
@@ -221,9 +223,13 @@
                 return;
             }
 
-            const data = { client, analysis, startDate, endDate };
+            console.log({ client, analysis, startDate, endDate });
 
-            alert(`נשלח בהצלחה: ${JSON.stringify(data)}`);
+            alert(`נשלח בהצלחה:
+לקוח: ${client}
+ניתוח: ${analysis}
+תאריך התחלה: ${startDate}
+תאריך סיום: ${endDate}`);
         }
     </script>
 </body>
